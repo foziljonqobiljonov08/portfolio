@@ -1,0 +1,202 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #f2f3f5;
+  background: #0a0a0a;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --bg: #0a0a0a;
+  --surface: rgba(24, 24, 24, 0.78);
+  --surface-strong: rgba(20, 20, 20, 0.94);
+  --border: rgba(255, 255, 255, 0.12);
+  --text: #f7f7f8;
+  --muted: #a3a7ae;
+  --accent: #e7e9ec;
+  --accent-2: #9aa5b1;
+  --success: #34d399;
+  --shadow: 0 24px 90px rgba(0, 0, 0, 0.5);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 15% -10%, rgba(159, 176, 195, 0.10), transparent 32%),
+    radial-gradient(circle at 90% 10%, rgba(124, 138, 156, 0.08), transparent 32%),
+    linear-gradient(135deg, #0a0a0a 0%, #121212 45%, #090909 100%);
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.container {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.section {
+  position: relative;
+  padding: 110px 0;
+}
+
+.section-head {
+  max-width: 760px;
+  margin-bottom: 42px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.eyebrow span {
+  width: 34px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.section-title {
+  color: var(--text);
+  font-size: clamp(32px, 5vw, 58px);
+  line-height: 1.05;
+  letter-spacing: -0.055em;
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+
+.section-text {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.8;
+  max-width: 720px;
+}
+
+.btn {
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-weight: 800;
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+  // Dark Reader va shunga o'xshash kengaytmalar/OS "force dark" funksiyasi
+  // ushbu elementning ranglarini o'zi hisoblab, teskari qilib qo'yishidan saqlaydi.
+  color-scheme: light;
+  forced-color-adjust: none;
+}
+
+// Shine-sweep: hover paytida chapdan o'ngga o'tuvchi yorug'lik chizig'i.
+// z-index: -1 — matn har doim (span bilan o'ralganmi yo'qmi, farqi yo'q) ustida qoladi.
+.btn::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: -60%;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  transform: skewX(-20deg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.btn:hover::after {
+  opacity: 1;
+  animation: btn-shine 0.9s ease forwards;
+}
+
+@keyframes btn-shine {
+  from {
+    left: -60%;
+  }
+  to {
+    left: 130%;
+  }
+}
+
+.btn:active {
+  transform: translateY(-1px) scale(0.97);
+  transition: transform 0.12s ease;
+}
+
+.btn--primary {
+  color: #050505 !important;
+  background: linear-gradient(135deg, #ffffff, #e3e6ea 55%, #c7ccd3);
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.45);
+}
+
+.btn--primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+}
+
+.btn--ghost {
+  color: var(--text);
+  border-color: var(--border);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(14px);
+}
+
+.btn--ghost:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn::after {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .container {
+    width: min(100% - 28px, 1180px);
+  }
+
+  .section {
+    padding: 72px 0;
+  }
+
+  .section-title {
+    letter-spacing: -0.035em;
+  }
+
+  .section-text {
+    font-size: 15.5px;
+  }
+}

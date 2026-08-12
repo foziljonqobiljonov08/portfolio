@@ -1,0 +1,364 @@
+.projects {
+  background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(159,176,195,0.025));
+}
+
+.projects__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+// ---- Karta konteyneri: hech qachon o'zi harakatlanmaydi/kattalashmaydi ----
+.project-card {
+  --mx: 25%;
+  --my: 0%;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  background: linear-gradient(180deg, rgba(20,20,20,0.82), rgba(20,20,20,0.45));
+  box-shadow: var(--shadow);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+// Sichqoncha harakatiga qarab yumshoq spotlight - bu FAQAT yorug'lik, karta/rasmning o'zi qimirlamaydi
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,0.08), transparent 42%);
+  pointer-events: none;
+  transition: background 0.2s ease;
+}
+
+.project-card:hover,
+.project-card:focus-within,
+.project-card--active {
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: var(--shadow), 0 0 60px rgba(159, 176, 195, 0.12);
+}
+
+.project-card:focus-visible {
+  outline: 2px solid rgba(159, 176, 195, 0.85);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    transition: none;
+  }
+}
+
+// ---- "Rasm" (browser mockup) - butun karta bo'ylab, hover'da mutlaqo qimirlamaydi ----
+.project-card__mockup {
+  position: relative;
+  margin: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 22px;
+  overflow: hidden;
+  background: #101010;
+  transition: none; // qasddan - hech qanday hover-transform bo'lmasin
+}
+
+.mockup__top {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 13px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.mockup__top i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  animation: mockupDotWave 2.4s ease-in-out infinite;
+}
+
+.mockup__top i:nth-child(1) {
+  background: #ff5f57;
+  box-shadow: 0 0 18px rgba(255, 95, 87, 0.42);
+  animation-delay: 0s;
+}
+
+.mockup__top i:nth-child(2) {
+  background: #ffbd2e;
+  box-shadow: 0 0 18px rgba(255, 189, 46, 0.42);
+  animation-delay: 0.8s;
+}
+
+.mockup__top i:nth-child(3) {
+  background: #28c840;
+  box-shadow: 0 0 18px rgba(40, 200, 64, 0.42);
+  animation-delay: 1.6s;
+}
+
+@keyframes mockupDotWave {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  18% {
+    transform: translateY(-7px) scale(1.08);
+  }
+  36% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mockup__top i {
+    animation: none;
+  }
+}
+
+.mockup__top span {
+  margin-left: auto;
+}
+
+.mockup__illustration {
+  position: relative;
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255,255,255,0.05), transparent 60%),
+    #0c0c0c;
+}
+
+.mockup__illustration img {
+  width: 100%;
+  height: 100%;
+  max-height: 240px;
+  object-fit: contain;
+  display: block;
+}
+
+// ---- Overlay: hover/focus/tap'da paydo bo'ladigan qorong'i shisha panel ----
+.project-card__overlay {
+  position: absolute;
+  inset: 18px; // mockup bilan bir xil chegarada, xuddi shu radius
+  z-index: 2;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(6, 7, 9, 0.55) 0%, rgba(6, 7, 9, 0.86) 55%, rgba(6, 7, 9, 0.95) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 30px 80px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.project-card:hover .project-card__overlay,
+.project-card:focus-within .project-card__overlay,
+.project-card--active .project-card__overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card__overlay {
+    transition: none;
+  }
+}
+
+.project-card__overlay-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  max-width: 380px;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.4s ease 0.05s, transform 0.4s cubic-bezier(.16, 1, .3, 1) 0.05s;
+}
+
+.project-card:hover .project-card__overlay-inner,
+.project-card:focus-within .project-card__overlay-inner,
+.project-card--active .project-card__overlay-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card__overlay-inner {
+    transition: opacity 0.2s ease;
+    transform: none;
+  }
+}
+
+.project-card__overlay-inner h3 {
+  color: var(--text);
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  font-weight: 900;
+}
+
+.project-card__overlay-inner p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+// ---- Tap-hint: sensorli ekranlarda "bosing" ishorasi (overlay ochilmaguncha) ----
+.project-card__tap-hint {
+  position: absolute;
+  z-index: 2;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text);
+  background: rgba(10, 10, 10, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.project-card--active .project-card__tap-hint {
+  opacity: 0;
+}
+
+@media (pointer: coarse) {
+  .project-card__tap-hint {
+    display: inline-flex;
+  }
+}
+
+.project-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.project-card__tags span {
+  padding: 7px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+  font-size: 11.5px;
+  font-weight: 800;
+}
+
+.project-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+// "Batafsil" tugmasi saytning umumiy .btn tizimidan foydalanadi (gradient, shine, lift)
+// shu bilan butun sayt bo'ylab vizual izchillik saqlanadi.
+.project-card__actions .btn {
+  min-height: 42px;
+  padding: 0 20px;
+  font-size: 13.5px;
+}
+
+@media (max-width: 850px) {
+  .projects__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .projects__grid {
+    gap: 16px;
+  }
+
+  .project-card {
+    border-radius: 24px;
+  }
+
+  .project-card__mockup {
+    margin: 12px;
+    border-radius: 18px;
+  }
+
+  .project-card__overlay {
+    inset: 12px;
+    border-radius: 18px;
+    padding: 20px;
+  }
+
+  .mockup__top {
+    padding: 11px;
+  }
+
+  .mockup__top span {
+    max-width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .mockup__illustration {
+    min-height: 220px;
+    padding: 4px;
+  }
+
+  .mockup__illustration img {
+    max-height: 220px;
+  }
+
+  .project-card__overlay-inner h3 {
+    font-size: 19px;
+  }
+
+  .project-card__overlay-inner p {
+    font-size: 13.5px;
+  }
+}
+
+@media (max-width: 380px) {
+  .project-card {
+    border-radius: 22px;
+  }
+
+  .mockup__top span {
+    max-width: 116px;
+    font-size: 11px;
+  }
+
+  .mockup__illustration {
+    min-height: 190px;
+    padding: 4px;
+  }
+
+  .mockup__illustration img {
+    max-height: 190px;
+  }
+
+  .project-card__tags span {
+    padding: 6px 10px;
+    font-size: 10.5px;
+  }
+}
